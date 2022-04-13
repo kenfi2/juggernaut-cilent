@@ -30,11 +30,10 @@ namespace juggernaut_client.Server.Protocol
             if (m_connection != null)
                 throw new InvalidOperationException("Protocol.Connect: Trying to establish a connection before terminating.");
 
-            m_packetWriter.onFinishMessage.Connect(OnPacketWriterFinished);
-            m_packetReader.onPreparePacket.Connect(OnPacketReaderReady);
-
-            m_connection = new Connection();
-            AddConnectionListeners();
+            m_connection = new Connection
+            {
+                Protocol = this
+            };
 
             m_connection.Connect(address, port);
         }
@@ -43,48 +42,19 @@ namespace juggernaut_client.Server.Protocol
         {
             if (!!m_connection)
             {
-                m_packetWriter.onFinishMessage.Disconnect(OnPacketWriterFinished);
-                m_packetReader.onPreparePacket.Disconnect(OnPacketReaderReady);
-
                 // there is an public wrapper for disposing the used socket
                 // there is no need to reuse the socket
-                RemoveConnectionListeners();
+                m_connection.Protocol = null;
                 m_connection.Disconnect();
                 m_connection = null;
             }
         }
 
-        protected void AddConnectionListeners()
-        {
-            if (!!m_connection)
-            {
-                m_connection.onConnectionEstablished.Connect(OnConnectionEstablished);
-                m_connection.onConnectionTerminated.Connect(OnConnectionTerminated);
-                m_connection.onConnectionError.Connect(OnConnectionError);
-                m_connection.onConnectionSocketError.Connect(OnConnectionSocketError);
-                m_connection.onConnectionReceived.Connect(OnConnectionReceived);
-                m_connection.onConnectionSent.Connect(OnConnectionSent);
-            }
-        }
-
-        protected void RemoveConnectionListeners()
-        {
-            if (!!m_connection)
-            {
-                m_connection.onConnectionEstablished.Disconnect(OnConnectionEstablished);
-                m_connection.onConnectionTerminated.Disconnect(OnConnectionTerminated);
-                m_connection.onConnectionError.Disconnect(OnConnectionError);
-                m_connection.onConnectionSocketError.Disconnect(OnConnectionSocketError);
-                m_connection.onConnectionReceived.Disconnect(OnConnectionReceived);
-                m_connection.onConnectionSent.Disconnect(OnConnectionSent);
-            }
-        }
-
-        protected virtual void OnConnectionEstablished() { }
-        protected virtual void OnConnectionTerminated() { }
-        protected virtual void OnConnectionError(string error, bool disconnecting = false) { }
-        protected virtual void OnConnectionSocketError(System.Net.Sockets.SocketError e, string error) { }
-        protected virtual void OnConnectionReceived(CommunicationStream stream)
+        public virtual void OnConnectionEstablished() { }
+        public virtual void OnConnectionTerminated() { }
+        public virtual void OnConnectionError(string error, bool disconnecting = false) { }
+        public virtual void OnConnectionSocketError(System.Net.Sockets.SocketError e, string error) { }
+        public virtual void OnConnectionReceived(CommunicationStream stream)
         {
             try
             {
@@ -96,7 +66,7 @@ namespace juggernaut_client.Server.Protocol
                 stream.CopyTo(m_inputStream);
                 m_inputStream.Position = 0;
 
-                if (!m_packetReader.PreparePacket())
+                if (!m_packetReader.PreparePacket(OnPacketReaderReady))
                     OnConnectionError("Protocol.OnConnectionReceived: Failed to prepare packet.");
             }
             catch (Exception e)
@@ -104,7 +74,7 @@ namespace juggernaut_client.Server.Protocol
                 OnConnectionError($"Protocol.OnConnectionReceived: Failed to prepare packet ({e.Message}).");
             }
         }
-        protected virtual void OnConnectionSent(CommunicationStream stream) { }
+        public virtual void OnConnectionSent(CommunicationStream stream) { }
 
         protected virtual void OnPacketReaderReady()
         {

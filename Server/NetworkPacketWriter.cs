@@ -17,7 +17,6 @@ namespace juggernaut_client.Server
             get => m_xTEA;
             set => m_xTEA = value;
         }
-        public ActionEvent onFinishMessage = new ActionEvent();
 
         public CommunicationStream OutputPacketBuffer
         {
@@ -35,7 +34,7 @@ namespace juggernaut_client.Server
             return m_messageBuffer;
         }
 
-        public void FinishMessage()
+        public void FinishMessage(Action action = null)
         {
             m_outputBuffer = new CommunicationStream();
 
@@ -63,7 +62,7 @@ namespace juggernaut_client.Server
             m_outputBuffer.WriteShort((short)(m_outputBuffer.Length - Connection.PacketLengthSize));
             m_outputBuffer.Position = 0;
 
-            onFinishMessage.Execute();
+            action?.Invoke();
         }
 
         public const int ModAdler = 65521;

@@ -10,3 +10,17 @@ C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\C#\juggernaut-client\
 C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\C#\juggernaut-client\obj\Debug\juggernaut-client.pdb
 C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\C#\juggernaut-client\bin\Debug\BouncyCastle.Crypto.dll
 C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\C#\juggernaut-client\obj\Debug\juggernaut-client.csproj.CopyComplete
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\bin\Debug\juggernaut-client.exe.config
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\bin\Debug\juggernaut-client.exe
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\bin\Debug\juggernaut-client.pdb
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\bin\Debug\BouncyCastle.Crypto.dll
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut_client.BaseForm.resources
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut_client.CreateAccount.resources
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut_client.Properties.Resources.resources
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut-client.csproj.GenerateResource.cache
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut-client.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut-client.csproj.CopyComplete
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut-client.exe
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut-client.pdb
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut-client.csprojAssemblyReference.cache
+C:\Users\Usuario\Dropbox\PC\Desktop\AndroidGame\juggernaut\juggernaut-client\obj\Debug\juggernaut_client.LoginWindow.resources

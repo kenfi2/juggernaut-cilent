@@ -11,32 +11,16 @@ using System.Windows.Forms;
 
 namespace juggernaut_client
 {
-    public partial class Form1 : Form
+    public partial class LoginWindow : BaseForm
     {
-        int m_movX, m_movY;
-        bool m_isMoving = false;
-        public Form1()
+        public LoginWindow()
         {
             InitializeComponent();
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        protected override bool onClickCloseButton(object sender, EventArgs e)
         {
             Application.Exit();
-        }
-        private void minimize_Click(object sender, EventArgs e)
-        {
-            WindowState = FormWindowState.Minimized;
-        }
-        private void topPanel_MouseUp(object sender, MouseEventArgs e)
-        {
-            m_isMoving = false;
-        }
-
-        private void topPanel_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (m_isMoving)
-                this.SetDesktopLocation(MousePosition.X - m_movX, MousePosition.Y - m_movY);
+            return true;
         }
 
         private void PasswordTextBox_KeyDown(object sender, KeyEventArgs e)
@@ -44,6 +28,7 @@ namespace juggernaut_client
             if (e.KeyCode == Keys.Enter)
             {
                 ExecuteLogin();
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -59,12 +44,14 @@ namespace juggernaut_client
 
             if (_email != "" && _password != "")
             {
-                ProtocolLogin login = new ProtocolLogin();
-
                 try
                 {
-                    login.EmailAddress = _email;
-                    login.Password = _password;
+                    ProtocolLogin login = new ProtocolLogin
+                    {
+                        Type = (byte)LoginOpcode.DoLogin,
+                        EmailAddress = _email,
+                        Password = _password
+                    };
 
                     login.Connect("127.0.0.1", 7171);
                 } catch
@@ -72,17 +59,26 @@ namespace juggernaut_client
                 }
             }
         }
-
-        public void Write(string msg)
+        private void createAccount_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            console.Text += msg + '\n';
+            CreateAccount createAccount = new CreateAccount();
+            createAccount.ShowDialog();
         }
 
-        private void topPanel_MouseDown(object sender, MouseEventArgs e)
+        public void ConsoleWrite(string msg)
         {
-            m_isMoving = true;
-            m_movX = e.X;
-            m_movY = e.Y;
+            console.AppendText(msg);
+            console.AppendText(Environment.NewLine);
+        }
+
+        private void textBox1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && textBox1.Text != "")
+            {
+                ConsoleWrite(textBox1.Text);
+                textBox1.Text = "";
+                e.SuppressKeyPress = true;
+            }
         }
     }
 }

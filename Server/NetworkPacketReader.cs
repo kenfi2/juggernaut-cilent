@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace juggernaut_client.Server
 {
-    public class NetworkPacketReader : ActionEvent
+    public class NetworkPacketReader
     {
         private Cryptography.XTEA m_xTEA = null;
         private CommunicationStream m_inputStream = null;
 
         private bool m_compressed = false;
-
-        public ActionEvent onPreparePacket = new ActionEvent();
 
         public Cryptography.XTEA XTEA
         {
@@ -36,7 +34,7 @@ namespace juggernaut_client.Server
             return m_inputStream.BytesAvailable >= bytes;
         }
 
-        public bool PreparePacket()
+        public bool PreparePacket(Action action = null)
         {
             var recvChecksum = m_inputStream.ReadUnsignedInt();
 
@@ -55,7 +53,7 @@ namespace juggernaut_client.Server
                     return false;
             }
 
-            onPreparePacket.Execute();
+            action?.Invoke();
             return true;
         }
     }

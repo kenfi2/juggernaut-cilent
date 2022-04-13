@@ -1,7 +1,7 @@
 ﻿
 namespace juggernaut_client
 {
-    partial class Form1
+    partial class LoginWindow
     {
         /// <summary>
         /// Required designer variable.
@@ -29,70 +29,24 @@ namespace juggernaut_client
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.topPanel = new System.Windows.Forms.Panel();
-            this.minimizeButton = new System.Windows.Forms.Button();
-            this.closeButton = new System.Windows.Forms.Button();
             this.loginPanel = new System.Windows.Forms.Panel();
+            this.createAccount = new System.Windows.Forms.LinkLabel();
             this.loginButton = new System.Windows.Forms.Button();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.emailTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.console = new System.Windows.Forms.TextBox();
-            this.topPanel.SuspendLayout();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.loginPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // topPanel
-            // 
-            this.topPanel.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.topPanel.Controls.Add(this.minimizeButton);
-            this.topPanel.Controls.Add(this.closeButton);
-            this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.topPanel.Location = new System.Drawing.Point(0, 0);
-            this.topPanel.Name = "topPanel";
-            this.topPanel.Size = new System.Drawing.Size(800, 32);
-            this.topPanel.TabIndex = 0;
-            this.topPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseDown);
-            this.topPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseMove);
-            this.topPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.topPanel_MouseUp);
-            // 
-            // minimizeButton
-            // 
-            this.minimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.minimizeButton.FlatAppearance.BorderSize = 0;
-            this.minimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.minimizeButton.Image = ((System.Drawing.Image)(resources.GetObject("minimizeButton.Image")));
-            this.minimizeButton.Location = new System.Drawing.Point(727, 0);
-            this.minimizeButton.Name = "minimizeButton";
-            this.minimizeButton.Size = new System.Drawing.Size(32, 32);
-            this.minimizeButton.TabIndex = 0;
-            this.minimizeButton.TabStop = false;
-            this.minimizeButton.UseVisualStyleBackColor = true;
-            this.minimizeButton.Click += new System.EventHandler(this.minimize_Click);
-            // 
-            // closeButton
-            // 
-            this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.closeButton.FlatAppearance.BorderSize = 0;
-            this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
-            this.closeButton.Location = new System.Drawing.Point(765, 0);
-            this.closeButton.Name = "closeButton";
-            this.closeButton.Size = new System.Drawing.Size(32, 32);
-            this.closeButton.TabIndex = 0;
-            this.closeButton.TabStop = false;
-            this.closeButton.UseVisualStyleBackColor = true;
-            this.closeButton.Click += new System.EventHandler(this.button1_Click);
             // 
             // loginPanel
             // 
             this.loginPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.loginPanel.Controls.Add(this.createAccount);
             this.loginPanel.Controls.Add(this.loginButton);
             this.loginPanel.Controls.Add(this.PasswordTextBox);
             this.loginPanel.Controls.Add(this.label2);
@@ -102,6 +56,17 @@ namespace juggernaut_client
             this.loginPanel.Name = "loginPanel";
             this.loginPanel.Size = new System.Drawing.Size(378, 338);
             this.loginPanel.TabIndex = 1;
+            // 
+            // createAccount
+            // 
+            this.createAccount.Location = new System.Drawing.Point(125, 301);
+            this.createAccount.Name = "createAccount";
+            this.createAccount.Size = new System.Drawing.Size(131, 23);
+            this.createAccount.TabIndex = 3;
+            this.createAccount.TabStop = true;
+            this.createAccount.Text = "create account";
+            this.createAccount.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.createAccount.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.createAccount_LinkClicked);
             // 
             // loginButton
             // 
@@ -122,7 +87,7 @@ namespace juggernaut_client
             this.PasswordTextBox.Location = new System.Drawing.Point(116, 114);
             this.PasswordTextBox.MaxLength = 16;
             this.PasswordTextBox.Name = "PasswordTextBox";
-            this.PasswordTextBox.Size = new System.Drawing.Size(213, 32);
+            this.PasswordTextBox.Size = new System.Drawing.Size(181, 32);
             this.PasswordTextBox.TabIndex = 2;
             this.PasswordTextBox.UseSystemPasswordChar = true;
             this.PasswordTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PasswordTextBox_KeyDown);
@@ -145,7 +110,7 @@ namespace juggernaut_client
             this.emailTextBox.Location = new System.Drawing.Point(116, 76);
             this.emailTextBox.MaxLength = 60;
             this.emailTextBox.Name = "emailTextBox";
-            this.emailTextBox.Size = new System.Drawing.Size(213, 32);
+            this.emailTextBox.Size = new System.Drawing.Size(181, 32);
             this.emailTextBox.TabIndex = 1;
             // 
             // label1
@@ -160,25 +125,38 @@ namespace juggernaut_client
             // 
             // console
             // 
-            this.console.Location = new System.Drawing.Point(23, 80);
+            this.console.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.console.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.console.ForeColor = System.Drawing.SystemColors.Window;
+            this.console.Location = new System.Drawing.Point(12, 80);
             this.console.Multiline = true;
             this.console.Name = "console";
             this.console.ReadOnly = true;
-            this.console.Size = new System.Drawing.Size(175, 338);
-            this.console.TabIndex = 2;
+            this.console.Size = new System.Drawing.Size(204, 312);
+            this.console.TabIndex = 9;
             // 
-            // Form1
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(12, 398);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(204, 20);
+            this.textBox1.TabIndex = 10;
+            this.textBox1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyUp);
+            // 
+            // LoginWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.console);
             this.Controls.Add(this.loginPanel);
-            this.Controls.Add(this.topPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "Form1";
+            this.Name = "LoginWindow";
             this.Text = "Form1";
-            this.topPanel.ResumeLayout(false);
+            this.Controls.SetChildIndex(this.loginPanel, 0);
+            this.Controls.SetChildIndex(this.console, 0);
+            this.Controls.SetChildIndex(this.textBox1, 0);
             this.loginPanel.ResumeLayout(false);
             this.loginPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -187,17 +165,15 @@ namespace juggernaut_client
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel topPanel;
-        private System.Windows.Forms.Button closeButton;
-        private System.Windows.Forms.Button minimizeButton;
         private System.Windows.Forms.Panel loginPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox emailTextBox;
         private System.Windows.Forms.TextBox PasswordTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button loginButton;
+        private System.Windows.Forms.LinkLabel createAccount;
         private System.Windows.Forms.TextBox console;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

@@ -33,7 +33,7 @@ namespace juggernaut_client.Server
             State = state;
         }
     }
-    public class Connection : ActionEvent
+    public class Connection
     {
         public const int HeaderPos = 0;
 
@@ -55,18 +55,13 @@ namespace juggernaut_client.Server
         protected bool m_sending = false;
         protected bool m_receiving = false;
         protected Queue m_packetQueue = null;
-
-        public ActionEvent onConnectionEstablished = new ActionEvent();
-        public ActionEvent onConnectionTerminated = new ActionEvent();
-        public ActionEvent<string, bool> onConnectionError = new ActionEvent<string, bool>();
-        public ActionEvent<SocketError, string> onConnectionSocketError = new ActionEvent<SocketError, string>();
-        public ActionEvent<CommunicationStream> onConnectionReceived = new ActionEvent<CommunicationStream>();
-        public ActionEvent<CommunicationStream> onConnectionSent = new ActionEvent<CommunicationStream>();
+        protected Protocol.Protocol m_protocol = null;
 
         public bool Established { get => m_established; }
         public bool Sending { get => m_sending; }
         public bool Receiving { get => m_receiving; }
         public bool Terminated { get => m_terminated; }
+        public Protocol.Protocol Protocol { get => m_protocol; set => m_protocol = value; }
 
         public void Connect(string address, int port)
         {
@@ -80,7 +75,8 @@ namespace juggernaut_client.Server
             var dnsAddress = Dns.GetHostAddresses(m_address);
             if (dnsAddress == null || dnsAddress.Length == 0)
             {
-                onConnectionSocketError.Execute(SocketError.AddressNotAvailable, "Invalid IP/Hostname given as a parameter.");
+                if (m_protocol)
+                    m_protocol.OnConnectionSocketError(SocketError.AddressNotAvailable, "Invalid IP/Hostname given as a parameter.");
                 return;
             }
 
@@ -95,7 +91,8 @@ namespace juggernaut_client.Server
             }
             catch (SocketException e)
             {
-                onConnectionSocketError.Execute(e.SocketErrorCode, e.Message);
+                if (m_protocol)
+                    m_protocol.OnConnectionSocketError(e.SocketErrorCode, e.Message);
             }
         }
         public void Disconnect()
@@ -151,10 +148,6 @@ namespace juggernaut_client.Server
             m_sending = true;
 
             var stateObject = new AsyncStateHolder(buffer);
-            foreach (var a in buffer)
-            {
-                Console.WriteLine(Convert.ToString(a));
-            }
             m_socket.BeginSend(stateObject.Buffer, stateObject.State, stateObject.Required, SocketFlags.None, OnConnectionSend, stateObject);
         }
         protected void InternalReceiveHeader()
@@ -192,7 +185,11 @@ namespace juggernaut_client.Server
 
             m_established = true;
             m_packetQueue = new Queue();
-            onConnectionEstablished.Execute();
+
+            if (m_protocol)
+            {
+                m_protocol.OnConnectionEstablished();
+            }
         }
         private void OnConnectionSend(IAsyncResult asyncResult)
         {
@@ -226,7 +223,7 @@ namespace juggernaut_client.Server
             stateObject.State += total;
             if (stateObject.Finished)
             {
-                onConnectionSent.Execute(new CommunicationStream(stateObject.AsyncBuffer));
+                m_protocol.OnConnectionSent(new CommunicationStream(stateObject.AsyncBuffer));
                 lock (m_packetQueue)
                 {
                     if (m_packetQueue.Count > 0)
@@ -310,7 +307,7 @@ namespace juggernaut_client.Server
             stateObject.State += total;
             if (stateObject.Finished)
             {
-                onConnectionReceived.Execute(new CommunicationStream(stateObject.AsyncBuffer));
+                m_protocol.OnConnectionReceived(new CommunicationStream(stateObject.AsyncBuffer));
 
                 m_receiving = false;
                 return;
@@ -330,7 +327,10 @@ namespace juggernaut_client.Server
             m_socket = null;
             m_packetQueue = null;
 
-            onConnectionTerminated.Execute();
+            if (m_protocol)
+            {
+                m_protocol.OnConnectionTerminated();
+            }
         }
         public static bool operator !(Connection instance)
         {
